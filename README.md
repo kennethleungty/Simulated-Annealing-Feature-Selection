@@ -1,5 +1,5 @@
-# Feature Selection with Simulated Annealing, Clearly Explained
-## Concepts and Python implementation of the global search algorithm to select the best set of features for machine learning
+# Feature Selection using Simulated Annealing, Clearly Explained
+### Concepts and Python implementation of the global search algorithm to select the best set of features for machine learning
 ___
 Link to Medium article: *Coming Soon*
 ___
