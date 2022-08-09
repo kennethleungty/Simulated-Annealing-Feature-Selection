@@ -79,12 +79,6 @@ def simulated_annealing(X_train,
             pending_cols = full_set.difference(curr_subset) 
             new_subset = curr_subset.copy()   
 
-            print('pending cols')
-            print(pending_cols)
-            print('curr cols')
-            print(curr_subset)
-            print(move)
-
             if move == 'Add':        
                 new_subset.add(random.choice(list(pending_cols)))
             elif move == 'Replace': 
