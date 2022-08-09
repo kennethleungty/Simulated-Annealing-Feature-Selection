@@ -1,13 +1,18 @@
 import pandas as pd
 import numpy as np
 import random
-from .utils import train_model
+from datetime import datetime as dt
+from utils import train_model
+
+# Define paths
+DATA_PATH = '../data/processed/'
+OUTPUT_PATH = '../results/'
 
 # Load data
-PATH = './data/processed/'
-X_train = pd.read_csv(PATH + 'X_train.csv')
-y_train = pd.read_csv(PATH + 'y_train.csv')
+X_train = pd.read_csv(DATA_PATH + 'X_train.csv')
+y_train = pd.read_csv(DATA_PATH + 'y_train.csv')
 
+# Setup simulated annealing algorithm
 def simulated_annealing(X_train,
                         y_train,
                         maxiters=50,
@@ -19,17 +24,18 @@ def simulated_annealing(X_train,
     """
     Function to perform feature selection using simulated annealing
     Inputs:
-    X_train - Predictor features
-    y_train - Train labels
-    maxiters - Maximum number of iterations
-    alpha - factor to reduce temperature
-    beta - constant in probability estimate 
-    T_0 - Initial temperature
-    update_iters - Number of iterations required to update temperature
+    X_train: Predictor features
+    y_train: Train labels
+    maxiters: Maximum number of iterations
+    alpha: Factor to reduce temperature
+    beta: Constant in probability estimate 
+    T_0: Initial temperature
+    update_iters: Number of iterations required to update temperature
+    temp_reduction: Strategy for temperature reduction schedule
 
     Output:
-    1) Dataframe of the parameters explored and corresponding model performance
-    2) Best metric score (i.e. AUC score for this case)
+    1) Dataframe of parameters explored and corresponding model performance
+    2) Best metric score (i.e. AUC score in this case)
     3) List of subset features that correspond to the best metric
     """
     columns = ['Iteration', 'Feature Count', 'Feature Set', 
@@ -44,7 +50,7 @@ def simulated_annealing(X_train,
     full_set = set(np.arange(len(X_train.columns)))
 
     # Generate initial random subset based on ~50% of columns
-    curr_subset = set(random.sample(full_set, round(0.5 * len(full_set))))
+    curr_subset = set(random.sample(list(full_set), round(0.5 * len(full_set))))
 
     # Get baseline metric score (i.e. AUC) of initial random subset
     X_curr = X_train.iloc[:, list(curr_subset)]
@@ -68,9 +74,16 @@ def simulated_annealing(X_train,
 
         # Execute pertubation (i.e. alter current subset to get new subset)
         while True:
+            
             # Get columns not yet used in current subset
             pending_cols = full_set.difference(curr_subset) 
             new_subset = curr_subset.copy()   
+
+            print('pending cols')
+            print(pending_cols)
+            print('curr cols')
+            print(curr_subset)
+            print(move)
 
             if move == 'Add':        
                 new_subset.add(random.choice(list(pending_cols)))
@@ -94,7 +107,7 @@ def simulated_annealing(X_train,
 
         if metric > prev_metric:
             print('Local improvement in metric from {:8.4f} to {:8.4f} '
-                  .format(prev_metric, metric) + ' - parameters accepted')
+                  .format(prev_metric, metric) + ' - Feature subset accepted')
             outcome = 'Improved'
             accept_prob, rnd = '-', '-'
             prev_metric = metric
@@ -103,25 +116,25 @@ def simulated_annealing(X_train,
             # Keep track of overall best metric so far
             if metric > best_metric:
                 print('Global improvement in metric from {:8.4f} to {:8.4f} '
-                      .format(best_metric, metric) + ' - best parameters updated')
+                      .format(best_metric, metric) + ' - Feature subset updated')
                 best_metric = metric
                 best_subset = new_subset.copy()
                 
         else:
             rnd = np.random.uniform()
-            diff = metric - prev_metric
-            accept_prob = np.exp(beta * diff / T)
+            diff = prev_metric - metric
+            accept_prob = np.exp(-beta * diff / T)
 
             if rnd < accept_prob:
                 print('New subset has worse performance but still accept. Metric change' +
-                      ': {:8.4f} acceptance probability: {:6.4f} random number: {:6.4f}'
+                      ':{:8.4f}, Acceptance probability:{:6.4f}, Random number:{:6.4f}'
                       .format(diff, accept_prob, rnd))
                 outcome = 'Accept'
                 prev_metric = metric
                 curr_subset = new_subset.copy()
             else:
                 print('New subset has worse performance, therefore reject. Metric change' +
-                      ': {:8.4f} acceptance probability: {:6.4f} random number: {:6.4f}'
+                      ':{:8.4f}, Acceptance probability:{:6.4f}, Random number:{:6.4f}'
                       .format(diff, accept_prob, rnd))
                 outcome = 'Reject'
 
@@ -147,12 +160,19 @@ def simulated_annealing(X_train,
             else:
                 raise Exception("Temperature reduction strategy not recognized")
 
-    # Drop NaN rows in results
-    results = results.dropna(axis=0, how='all')
-
     # Convert column indices of best subset to original names
     best_subset_cols = [list(X_train.columns)[i] for i in list(best_subset)]
 
+    # Drop NaN rows in results
+    results = results.dropna(axis=0, how='all')
+
+    # Save results as CSV
+    dt_string = dt.now().strftime("%Y%m%d_%H%M%S")
+    results.to_csv(f'{OUTPUT_PATH}/sa_output_{dt_string}.csv', index=False)
+
     return results, best_metric, best_subset_cols
+
+if __name__ == '__main__':
+    simulated_annealing(X_train, y_train)
 
 # Adapted from: https://github.com/santhoshhari/simulated_annealing/blob/master/simulated_annealing.py
