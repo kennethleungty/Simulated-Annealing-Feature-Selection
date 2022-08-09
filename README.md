@@ -1,5 +1,5 @@
-# Feature Selection using Simulated Annealing, Clearly Explained
-### Concepts and Python implementation of the global search algorithm to select the best set of features for machine learning
+# Feature Selection with Simulated Annealing, Clearly Explained
+### Concepts and Python implementation of the global search algorithm to select the best features for machine learning
 ___
 Link to Medium article: *Coming Soon*
 ___
@@ -16,6 +16,8 @@ ___
 - `notebooks`: Jupyter notebooks for the different steps of the project i.e. data pre-processing, baseline modeling, and running of feature selection with simulated annealing algorithm
 - `results`: CSV files of the output from algorithm runs
 - `src`: Python scripts for simulated annealing algorithm for feature selection
+    - `main.py`: Main script containing the algorithm. Run it in CLI with `python main.py`
+    - `utils.py`: Utils script containing ML model function (i.e. random forest classifier)
 ___
 ### References
 - https://www.researchgate.net/publication/227061666_Computing_the_Initial_Temperature_of_Simulated_Annealing
