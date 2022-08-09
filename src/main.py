@@ -18,7 +18,7 @@ def simulated_annealing(X_train,
                         maxiters=50,
                         alpha=0.85,
                         beta=1,
-                        T_0=0.95,
+                        T_0=1,
                         update_iters=1,
                         temp_reduction='geometric'):
     """
@@ -64,16 +64,16 @@ def simulated_annealing(X_train,
             break
         
         print(f'Starting Iteration {i+1}')
-        # Decide what type of pertubation to make
-        if len(curr_subset) == len(full_set): 
-            move = 'Remove'
-        elif len(curr_subset) == 2: # Not to go below 2 features
-            move = random.choice(['Add', 'Replace'])
-        else:
-            move = random.choice(['Add', 'Replace', 'Remove'])
 
         # Execute pertubation (i.e. alter current subset to get new subset)
         while True:
+            # Decide what type of pertubation to make
+            if len(curr_subset) == len(full_set): 
+                move = 'Remove'
+            elif len(curr_subset) == 2: # Not to go below 2 features
+                move = random.choice(['Add', 'Replace'])
+            else:
+                move = random.choice(['Add', 'Replace', 'Remove'])
             
             # Get columns not yet used in current subset
             pending_cols = full_set.difference(curr_subset) 
@@ -94,9 +94,9 @@ def simulated_annealing(X_train,
                 new_subset.remove(random.choice(list(curr_subset)))
                 
             if new_subset in hash_values:
-                'Subset already visited'
+                print('Subset already visited')
             else:
-                hash_values.add(frozenset(new_subset)) # !!!! Review whether include here or after modeling !!!
+                hash_values.add(frozenset(new_subset))
                 break
 
         # Filter dataframe to current subset
@@ -107,7 +107,7 @@ def simulated_annealing(X_train,
 
         if metric > prev_metric:
             print('Local improvement in metric from {:8.4f} to {:8.4f} '
-                  .format(prev_metric, metric) + ' - Feature subset accepted')
+                  .format(prev_metric, metric) + ' - New subset accepted')
             outcome = 'Improved'
             accept_prob, rnd = '-', '-'
             prev_metric = metric
@@ -116,7 +116,7 @@ def simulated_annealing(X_train,
             # Keep track of overall best metric so far
             if metric > best_metric:
                 print('Global improvement in metric from {:8.4f} to {:8.4f} '
-                      .format(best_metric, metric) + ' - Feature subset updated')
+                      .format(best_metric, metric) + ' - Best subset updated')
                 best_metric = metric
                 best_subset = new_subset.copy()
                 
@@ -141,7 +141,7 @@ def simulated_annealing(X_train,
         # Update results dataframe
         results.loc[i, 'Iteration'] = i+1
         results.loc[i, 'Feature Count'] = len(curr_subset)
-        results.loc[i, 'Feature Set'] = list(curr_subset)
+        results.loc[i, 'Feature Set'] = sorted(curr_subset)
         results.loc[i, 'Metric'] = metric
         results.loc[i, 'Best Metric'] = best_metric
         results.loc[i, 'Acceptance Probability'] = accept_prob
