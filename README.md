@@ -20,7 +20,7 @@ ___
     - `utils.py`: Utils script containing ML model function (i.e. random forest classifier)
 ___
 ### References
-- https://www.researchgate.net/publication/227061666_Computing_the_Initial_Temperature_of_Simulated_Annealing
+- https://researchgate.net/publication/227061666_Computing_the_Initial_Temperature_of_Simulated_Annealing
 - https://search.r-project.org/CRAN/refmans/caret/html/safs.html
 - https://iopscience.iop.org/article/10.1088/1742-6596/1752/1/012030/pdf
 - https://topepo.github.io/caret/feature-selection-using-simulated-annealing.html
