@@ -16,7 +16,7 @@ ___
 - `notebooks`: Jupyter notebooks for the different steps of the project i.e. data pre-processing, baseline modeling, and running of feature selection with simulated annealing algorithm
 - `results`: CSV files of the output from algorithm runs
 - `src`: Python scripts for simulated annealing algorithm for feature selection
-    - `main.py`: Main script containing the algorithm. In CLI, run `cd` into `src` folder, then execute `python main.py`
+    - `main.py`: Main script containing algorithm. In CLI, `cd` into `src` folder, then execute `python main.py`
     - `utils.py`: Utils script containing ML model function (i.e. random forest classifier)
 ___
 ### References
