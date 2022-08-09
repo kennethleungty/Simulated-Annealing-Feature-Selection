@@ -14,6 +14,7 @@ ___
 - `data`: Titanic dataset (raw and processed)
 - `images`: Set of images and visualizations used to demonstrate algorithm
 - `notebooks`: Jupyter notebooks for the different steps of the project i.e. data pre-processing, baseline modeling, and running of feature selection with simulated annealing algorithm
+- `results`: CSV files of the output from algorithm runs
 - `src`: Python scripts for simulated annealing algorithm for feature selection
 ___
 ### References
