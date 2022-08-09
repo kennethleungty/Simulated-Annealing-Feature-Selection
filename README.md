@@ -1,4 +1,4 @@
-# Feature Selection with Simulated Annealing, Clearly Explained
+# Feature Selection with Simulated Annealing in Python, Clearly Explained
 ### Concepts and Python implementation of the global search algorithm to select the best features for machine learning
 ___
 Link to Medium article: *Coming Soon*
@@ -27,7 +27,6 @@ ___
 - https://www.slideshare.net/kaalnath/simulated-annealingppt
 - https://santhoshhari.github.io/simulated_annealing/
 - https://www.feat.engineering/simulated-annealing.html
-- https://machinelearningmastery.com/simulated-annealing-from-scratch-in-python/ 
 - https://towardsdatascience.com/optimization-techniques-simulated-annealing-d6a4785a1de7
 - https://www.sciencedirect.com/science/article/abs/pii/S0377221704005892
 - https://www.youtube.com/watch?v=Dp1irQX-c0Q&ab_channel=Udacity 
