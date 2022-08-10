@@ -1,7 +1,7 @@
 # Feature Selection with Simulated Annealing in Python, Clearly Explained
 ### Concepts and Python implementation of the global search algorithm to select the best features for machine learning
 ___
-Link to TowardsDataScience article: https://towardsdatascience.com/feature-selection-with-simulated-annealing-in-python-clearly-explained-1808db14f8fa
+TowardsDataScience article: https://towardsdatascience.com/feature-selection-with-simulated-annealing-in-python-clearly-explained-1808db14f8fa
 ___
 ### Context
 Feature selection is a key step in machine learning as it boosts computational efficiency and predictive performance by keeping only the most relevant predictors.
